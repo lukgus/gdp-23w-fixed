@@ -18,21 +18,18 @@ namespace physics
 		virtual btBroadphasePair* addOverlappingPair(
 			btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) override
 		{
-			printf("AddOverlappingPair\n");
 			return nullptr;
 		}
 
 		virtual void* removeOverlappingPair(btBroadphaseProxy* proxy0,
 			btBroadphaseProxy* proxy1, btDispatcher* dispatcher) override
 		{
-			printf("RemoveOverlappingPair\n");
 			return nullptr;
 		}
 
 		virtual void removeOverlappingPairsContainingProxy(
 			btBroadphaseProxy* proxy0, btDispatcher* dispatcher) override
 		{
-			printf("RemoveOverlappingPairsContainingProxy\n");
 		}
 	};
 

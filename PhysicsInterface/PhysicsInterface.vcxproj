@@ -142,6 +142,7 @@
     <ClInclude Include="physics\interfaces\BodyType.h" />
     <ClInclude Include="physics\interfaces\BoxShape.h" />
     <ClInclude Include="physics\interfaces\CapsuleShape.h" />
+    <ClInclude Include="physics\interfaces\ConeTwistConstraint.h" />
     <ClInclude Include="physics\interfaces\ConstraintType.h" />
     <ClInclude Include="physics\interfaces\CylinderShape.h" />
     <ClInclude Include="physics\interfaces\iCharacterController.h" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="physics\interfaces\BoxShape.cpp" />
     <ClCompile Include="physics\interfaces\CapsuleShape.cpp" />
+    <ClCompile Include="physics\interfaces\ConeTwistConstraint.cpp" />
     <ClCompile Include="physics\interfaces\CylinderShape.cpp" />
     <ClCompile Include="physics\interfaces\PlaneShape.cpp" />
     <ClCompile Include="physics\interfaces\Point2PointConstraint.cpp" />

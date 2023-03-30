@@ -78,6 +78,9 @@
     <ClInclude Include="physics\interfaces\ConstraintType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="physics\interfaces\ConeTwistConstraint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="physics\interfaces\BoxShape.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physics\interfaces\Point2PointConstraint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\interfaces\ConeTwistConstraint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

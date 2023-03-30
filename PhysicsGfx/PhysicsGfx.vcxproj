@@ -166,6 +166,8 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="NavMeshDemoWorld.cpp" />
     <ClCompile Include="PhysicsDemoWorld.cpp" />
+    <ClCompile Include="Ragdoll.cpp" />
+    <ClCompile Include="RagdollDemoWorld.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VehicleDemoWorld.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="NavMeshDemoWorld.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="PhysicsDemoWorld.h" />
+    <ClInclude Include="Ragdoll.h" />
+    <ClInclude Include="RagdollDemoWorld.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VehicleDemoWorld.h" />

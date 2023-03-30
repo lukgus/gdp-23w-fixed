@@ -9,6 +9,7 @@
 #include "CharacterAnimationDemoWorld.h"
 #include "NavMeshDemoWorld.h"
 #include "VehicleDemoWorld.h"
+#include "RagdollDemoWorld.h"
 
 #include <string>
 #include <fstream>
@@ -59,6 +60,10 @@ void LoadWorld(const std::string& worldName)
 	else if (strcmp(worldName.c_str(), "VehicleDemoWorld") == 0)
 	{
 		g_World = new VehicleDemoWorld();
+	}
+	else if (strcmp(worldName.c_str(), "RagdollDemoWorld") == 0)
+	{
+		g_World = new RagdollDemoWorld();
 	}
 }
 

@@ -11,6 +11,7 @@
 // Constraints
 #include <physics/interfaces/iConstraint.h>
 #include <physics/interfaces/Point2PointConstraint.h>
+#include <physics/interfaces/ConeTwistConstraint.h>
 
 // Bodies
 #include "RigidBody.h"
@@ -45,6 +46,11 @@ namespace physics
 
 	void CastGLMMat4(const btTransform& in, glm::mat4* out)
 	{
+	}
+
+	void CastBulletTransform(const glm::mat4& in, btTransform* out)
+	{
+		(*out).setFromOpenGLMatrix((const btScalar*)(&in[0][0]));
 	}
 
 	void CastBulletQuaternion(const glm::quat& in, btQuaternion* out)
@@ -131,6 +137,21 @@ namespace physics
 			btCylinderShape* btCylinder = new btCylinderShape(btHalfExtents);
 
 			return btCylinder;
+		} break;
+
+		case ShapeType::Capsule:
+		{
+			CapsuleShape* capsule = CapsuleShape::Cast(shape);
+
+			btScalar btRadius;
+			btScalar btHeight;
+
+			CastBulletScalar(capsule->GetRadius(), &btRadius);
+			CastBulletScalar(capsule->GetHeight(), &btHeight);
+
+			btCapsuleShape* btCapsule = new btCapsuleShape(btRadius, btHeight);
+
+			return btCapsule;
 		} break;
 
 		//case ShapeType::TriangleMesh:
@@ -225,7 +246,29 @@ namespace physics
 		switch (type)
 		{
 		case physics::ConstraintType::ConeTwist:
-			assert(0); // not implemented
+		{
+			ConeTwistConstraint* coneTwist = ConeTwistConstraint::Cast(constraint);
+
+			btRigidBody* btBodyA = CastBulletRigidBody(coneTwist->GetRididBodyA());
+			btRigidBody* btBodyB = CastBulletRigidBody(coneTwist->GetRididBodyB());
+
+			btTransform btTransformA;
+			btTransform btTransformB;
+			CastBulletTransform(coneTwist->GetTransformA(), &btTransformA);
+			CastBulletTransform(coneTwist->GetTransformB(), &btTransformB);
+
+			btConeTwistConstraint* btConeTwist;
+			if (btBodyB == nullptr)
+			{
+				btConeTwist = new btConeTwistConstraint(*btBodyA, btTransformA);
+			}
+			else
+			{
+				btConeTwist = new btConeTwistConstraint(*btBodyA, *btBodyB, btTransformA, btTransformB);
+			}
+
+			return btConeTwist;
+		}
 			break;
 
 		case physics::ConstraintType::Gear:

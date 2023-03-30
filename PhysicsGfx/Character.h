@@ -64,7 +64,7 @@ namespace gdp
 
 		void UpdateTransforms(std::vector<glm::mat4>& transforms, std::vector<glm::mat4>& globals, float dt);
 
-		void SetAnimation(int animationId, float time = 0.75f) {
+		void SetAnimation(int animationId, float time = 1.f) {
 			m_TransitionTime = time;
 			m_PreviousAnimation = m_CurrentAnimation;
 			m_CurrentAnimation = animationId;

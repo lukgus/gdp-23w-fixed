@@ -151,8 +151,8 @@ namespace gdp
         g_PhysicsWorld->TimeStep(elapsedTimeInSeconds);
         g_AnimationManager.Update(gGameObjectVec, elapsedTimeInSeconds);
 
-        RenderObjects = true;
-        RenderPhysicsDebug = false;
+        //RenderObjects = false;
+        //RenderPhysicsDebug = true;
 
         if (GDP_IsKeyPressed('n'))
         {
