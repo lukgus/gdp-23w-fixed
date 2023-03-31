@@ -15,11 +15,85 @@ Ragdoll::Ragdoll(float mass, float scale)
 	m_Joints.resize(NUM_JOINTS);
 
 	Generate();
+
+	// Hacking in the Bone Indexes for this example.
+	m_BoneIndexToBodyPartIndex[0] = BodyPart_LowerRightLeg;
+	m_BoneIndexToBodyPartIndex[1] = BodyPart_LowerRightLeg;
+	m_BoneIndexToBodyPartIndex[2] = BodyPart_LowerLeftLeg;
+	m_BoneIndexToBodyPartIndex[3] = BodyPart_UpperRightLeg;
+	m_BoneIndexToBodyPartIndex[4] = BodyPart_UpperLeftLeg;
+	m_BoneIndexToBodyPartIndex[5] = BodyPart_LowerLeftLeg;
+	m_BoneIndexToBodyPartIndex[6] = BodyPart_LowerRightLeg;
+	m_BoneIndexToBodyPartIndex[7] = BodyPart_LowerRightLeg;
+	m_BoneIndexToBodyPartIndex[8] = BodyPart_LowerLeftLeg;
+	m_BoneIndexToBodyPartIndex[9] = BodyPart_Pelvis;
+	m_BoneIndexToBodyPartIndex[10] = BodyPart_LowerLeftLeg;
+	m_BoneIndexToBodyPartIndex[11] = BodyPart_UpperRightArm;
+	m_BoneIndexToBodyPartIndex[12] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[13] = BodyPart_Head;
+	m_BoneIndexToBodyPartIndex[14] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[15] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[16] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[17] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[18] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[19] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[20] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[21] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[22] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[23] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[24] = BodyPart_LowerRightArm;
+	m_BoneIndexToBodyPartIndex[25] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[26] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[27] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[28] = BodyPart_UpperLeftArm;
+	m_BoneIndexToBodyPartIndex[29] = BodyPart_UpperLeftArm;
+	m_BoneIndexToBodyPartIndex[30] = BodyPart_Head;
+	m_BoneIndexToBodyPartIndex[31] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[32] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[33] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[34] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[35] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[36] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[37] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[38] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[39] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[40] = BodyPart_LowerLeftArm;
+	m_BoneIndexToBodyPartIndex[41] = BodyPart_Head;
+	m_BoneIndexToBodyPartIndex[42] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[43] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[44] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[45] = BodyPart_Spine;
+	m_BoneIndexToBodyPartIndex[46] = BodyPart_Spine;
+
+
+
+
+
+	//m_BoneIndexToBodyPartIndex[13] = BodyPart_Head;			// RigHead
+	//m_BoneIndexToBodyPartIndex[25] = BodyPart_Spine;		// RigSpine1
+	//m_BoneIndexToBodyPartIndex[9] = BodyPart_Pelvis;		// RigPelvis
+	//m_BoneIndexToBodyPartIndex[28] = BodyPart_UpperLeftArm;	// RigLArmUpperArm
+	//m_BoneIndexToBodyPartIndex[31] = BodyPart_LowerLeftArm;	// RigLArmForearm
+	//m_BoneIndexToBodyPartIndex[1] = BodyPart_UpperRightArm;	// RigRArmUpper
+	//m_BoneIndexToBodyPartIndex[14] = BodyPart_LowerRightArm;// RigRArmForearm
+	//m_BoneIndexToBodyPartIndex[4] = BodyPart_UpperLeftLeg;	// RigLLeg1
+	//m_BoneIndexToBodyPartIndex[5] = BodyPart_LowerLeftLeg;	// RigLLeg2
+	//m_BoneIndexToBodyPartIndex[3] = BodyPart_UpperRightLeg;	// RigRLeg1
+	//m_BoneIndexToBodyPartIndex[0] = BodyPart_LowerRightLeg;	// RigRLeg2
 }
 
 Ragdoll::~Ragdoll()
 {
 
+}
+
+void Ragdoll::GetBodyPartTransform(int boneIndex, glm::mat4& out)
+{
+	map<int,int>::iterator it = m_BoneIndexToBodyPartIndex.find(boneIndex);
+	if (it == m_BoneIndexToBodyPartIndex.end())
+		return;
+
+	m_Bodies[it->second]->GetTransform(out);
 }
 
 void Ragdoll::Generate()
@@ -55,7 +129,7 @@ void Ragdoll::GenerateBodyParts()
 	m_Shapes[BodyPart_LowerRightLeg] =	CreateCapsule(0.15f * m_Scale, 0.50f * m_Scale);
 
 	// Create all the bodies
-	m_Bodies[BodyPart_Head] =			CreateBodyPart(m_Shapes[BodyPart_Head], Vector3(0, 3, 0), 0.14f * m_Scale);
+	m_Bodies[BodyPart_Head] =			CreateBodyPart(m_Shapes[BodyPart_Head], Vector3(0, 3, 0), -0.14f * m_Scale);
 	m_Bodies[BodyPart_Spine] =			CreateBodyPart(m_Shapes[BodyPart_Spine], Vector3(0, 2, 0), 1.f * m_Scale);
 	m_Bodies[BodyPart_Pelvis] =			CreateBodyPart(m_Shapes[BodyPart_Pelvis], Vector3(0, 1, 0), 1.f * m_Scale);
 	m_Bodies[BodyPart_UpperLeftArm] =	CreateBodyPart(m_Shapes[BodyPart_UpperLeftArm], Vector3(-1, 2,0), 0.4f * m_Scale);
@@ -175,6 +249,5 @@ void Ragdoll::CreateJoint(Joint joint, BodyPart bodyPartA, BodyPart bodyPartB, V
 {
 	glm::mat4 transformA = glm::translate(glm::mat4(1.f), offsetA);
 	glm::mat4 transformB = glm::translate(glm::mat4(1.f), offsetB);
-
 	m_Joints[joint] = new ConeTwistConstraint(m_Bodies[bodyPartA], m_Bodies[bodyPartB], transformA, transformB);
 }

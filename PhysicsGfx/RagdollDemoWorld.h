@@ -21,9 +21,13 @@ namespace gdp
 		void LoadAssets();
 		void CreateGround();
 
+		GameObject* m_Character;
+		unsigned int m_CharacterModelId;
+		std::string m_AnimationName;
+
 		unsigned int m_PlaneModelId;
 		unsigned int m_WoodTextureId;
-		unsigned int m_GroundMaterialId;
+		unsigned int m_WoodMaterialId;
 
 		Ragdoll* m_Ragdoll;
 	};

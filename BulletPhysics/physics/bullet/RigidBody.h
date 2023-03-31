@@ -31,6 +31,8 @@ namespace physics
 		virtual void ApplyTorque(const Vector3& torque) override;
 		virtual void ApplyTorqueImpulse(const Vector3& torqueImpulse) override;
 
+		virtual void GetTransform(glm::mat4& transform) override;
+
 		btRigidBody* GetBulletBody(void) { return m_BulletRigidBody; }
 	private:
 

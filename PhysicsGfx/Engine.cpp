@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "Material.h"
 #include "CheckGLError.h"
+#include "Ragdoll.h"
 
 #include "vertex_types.h"
 
@@ -33,6 +34,7 @@ namespace gdp
 {
     // TMP
     Character* g_tmpCharacter;
+    Ragdoll* g_tmpRagdoll;
     GameObject* g_tmpCharacterGameObject;
 
     DebugRendererObject DebugBone;
@@ -136,7 +138,9 @@ namespace gdp
         glutSwapBuffers();
     }
 
-    void Update() {
+    bool g_UseRagdollAsBones;
+    void Update() 
+    {
         // Get the curren time in milliseconds
         g_CurrTime = glutGet(GLUT_ELAPSED_TIME);
         float elapsedTimeInMilliseconds = g_CurrTime - g_PrevTime;
@@ -151,8 +155,6 @@ namespace gdp
         g_PhysicsWorld->TimeStep(elapsedTimeInSeconds);
         g_AnimationManager.Update(gGameObjectVec, elapsedTimeInSeconds);
 
-        //RenderObjects = false;
-        //RenderPhysicsDebug = true;
 
         if (GDP_IsKeyPressed('n'))
         {
@@ -161,6 +163,15 @@ namespace gdp
         if (GDP_IsKeyPressed('m'))
         {
             RenderPhysicsDebug = !RenderPhysicsDebug;
+        }
+
+        if (GDP_IsKeyPressed('k'))
+        {
+            g_tmpCharacter->SetUpdateMode(Kinematic);
+        }
+        if (GDP_IsKeyPressed('p'))
+        {
+            g_tmpCharacter->SetUpdateMode(Physics);
         }
 
         if (g_tmpCharacter != nullptr)
@@ -281,7 +292,7 @@ namespace gdp
 
             for (int i = 0; i < go->BoneModelMatrices.size(); i++)
             {
-                DebugRenderBone(go->GlobalTransformations[i]);
+                //DebugRenderBone(go->GlobalTransformations[i]);
             }
         }
         else
@@ -447,6 +458,9 @@ namespace gdp
         g_PhysicsFactory = new PhysicsFactoryType();
         g_PhysicsWorld = g_PhysicsFactory->CreateWorld();
 
+        RenderObjects = true;
+        RenderPhysicsDebug = false;
+
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
@@ -474,6 +488,12 @@ namespace gdp
         physics::iConvexShape* shape, float stepHeight, const glm::vec3& up)
     {
         return g_PhysicsFactory->CreateCharacterController(shape, stepHeight, up);
+    }
+
+    Ragdoll* GDP_CreateRagdoll(float scale)
+    {
+        g_tmpRagdoll = new Ragdoll(scale, scale);
+        return g_tmpRagdoll;
     }
 
     bool LoadAssimpMesh(gdp::CharacterAnimationData& animationData, unsigned int& id, const aiMesh* mesh)
@@ -855,6 +875,8 @@ namespace gdp
         g_tmpCharacter = new Character();
         g_tmpCharacter->LoadCharacterFromAssimp(filename);
 
+        g_tmpCharacter->SetRagdoll(g_tmpRagdoll);
+
         int numAnimations = animations.size();
         for (int i = 0; i < numAnimations; i++)
         {
@@ -872,11 +894,13 @@ namespace gdp
         g_AnimationManager.LoadAnimation(name, animation);
     }
 
-    void GDP_UpdateCallback(void (*callback)(float)) {
+    void GDP_UpdateCallback(void (*callback)(float)) 
+    {
         Updatecallback = callback;
     }
 
-    void GDP_RenderCallback(void (*callback)(void)) {
+    void GDP_RenderCallback(void (*callback)(void)) 
+    {
         Rendercallback = callback;
     }
 

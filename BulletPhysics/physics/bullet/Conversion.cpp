@@ -46,6 +46,7 @@ namespace physics
 
 	void CastGLMMat4(const btTransform& in, glm::mat4* out)
 	{
+		in.getOpenGLMatrix(&((*out)[0][0]));
 	}
 
 	void CastBulletTransform(const glm::mat4& in, btTransform* out)

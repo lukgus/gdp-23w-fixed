@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include <physics/interfaces/iRigidBody.h>
 #include <physics/interfaces/iConstraint.h>
@@ -9,24 +10,25 @@
 using namespace std;
 using namespace physics;
 
+enum BodyPart
+{
+	BodyPart_Head,
+	BodyPart_Spine,
+	BodyPart_Pelvis,
+	BodyPart_UpperLeftArm,
+	BodyPart_LowerLeftArm,
+	BodyPart_UpperRightArm,
+	BodyPart_LowerRightArm,
+	BodyPart_UpperLeftLeg,
+	BodyPart_LowerLeftLeg,
+	BodyPart_UpperRightLeg,
+	BodyPart_LowerRightLeg,
+	NUM_BODY_PARTS
+};
+
 class Ragdoll
 {
 private:
-	enum BodyPart
-	{
-		BodyPart_Head,
-		BodyPart_Spine,
-		BodyPart_Pelvis,
-		BodyPart_UpperLeftArm,
-		BodyPart_LowerLeftArm,
-		BodyPart_UpperRightArm,
-		BodyPart_LowerRightArm,
-		BodyPart_UpperLeftLeg,
-		BodyPart_LowerLeftLeg,
-		BodyPart_UpperRightLeg,
-		BodyPart_LowerRightLeg,
-		NUM_BODY_PARTS
-	};
 
 	enum Joint
 	{
@@ -55,6 +57,11 @@ public:
 	Ragdoll(float mass, float scale);
 	~Ragdoll();
 
+	iRigidBody* GetBodyPart(BodyPart part) {
+		return m_Bodies[part];
+	}
+	void GetBodyPartTransform(int boneIndex, glm::mat4& out);
+
 private:
 	void Generate();
 	void GenerateBodyParts();
@@ -69,6 +76,7 @@ private:
 	vector<iConstraint*> m_Joints;
 	vector<iRigidBody*> m_Bodies;
 	vector<BodyPartInfo> m_BodyPartInfo;
+	map<int, int> m_BoneIndexToBodyPartIndex;
 
 	float m_Mass;
 	float m_Scale;

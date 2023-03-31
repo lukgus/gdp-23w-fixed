@@ -56,7 +56,7 @@ namespace gdp
 		bool HasParent;
 		bool HasBones;
 
-		// Character Animation
+		// Character Animation || Ragdoll 
 		std::vector<glm::mat4> BoneModelMatrices;
 		std::vector<glm::mat4> GlobalTransformations;
 		glm::mat4 BoneRotationMatrices[66];

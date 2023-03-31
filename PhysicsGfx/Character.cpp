@@ -61,6 +61,7 @@ namespace gdp
 		, m_CurrentTimeInSeconds(0.0)
 		, m_CurrentAnimation(0)
 		, m_NumAnimationsLoaded(0)
+		, m_UpdateMode(Kinematic)
 	{
 	}
 
@@ -151,6 +152,8 @@ namespace gdp
 			int boneIdx = 0;
 			std::string boneName(bone->mName.data);
 
+			printf("%d: %s\n", i, boneName.c_str());
+
 			std::map<std::string, int>::iterator it = m_BoneNameToIdMap.find(boneName);
 			if (it == m_BoneNameToIdMap.end())
 			{
@@ -202,15 +205,31 @@ namespace gdp
 			printf("--------------------\n");
 			printf("Time: %.4f %d/%d\n", m_CurrentTimeInSeconds, keyFrameTime, (int)m_DurationInTicks);
 
-			UpdateBoneHierarchy(m_RootNode, identity, keyFrameTime);
-
-			transforms.resize(m_BoneInfoVec.size());
-			globals.resize(m_BoneInfoVec.size());
-			int numTransforms = m_BoneInfoVec.size();
-			for (int i = 0; i < numTransforms; i++)
+			if (m_UpdateMode == Kinematic)
 			{
-				transforms[i] = m_BoneInfoVec[i].finalTransformation;
-				globals[i] = m_BoneInfoVec[i].globalTransformation;
+				UpdateBoneHierarchy(m_RootNode, identity, keyFrameTime);
+				transforms.resize(m_BoneInfoVec.size());
+				globals.resize(m_BoneInfoVec.size());
+				int numTransforms = m_BoneInfoVec.size();
+				for (int i = 0; i < numTransforms; i++)
+				{
+					transforms[i] = m_BoneInfoVec[i].finalTransformation;
+					globals[i] = m_BoneInfoVec[i].globalTransformation;
+				}
+			}
+			else
+			{
+				// Should be able to do this once during load:
+				// Calculate Transform data from NodeHierarchy 
+
+				// Update from Ragdoll info
+				int numTransforms = m_BoneInfoVec.size();
+				glm::mat4 bodyPartTransform;
+				for (int i = 0; i < numTransforms; i++)
+				{
+					m_Ragdoll->GetBodyPartTransform(i, bodyPartTransform);
+					transforms[i] = bodyPartTransform; // * NodeTransform
+				}
 			}
 		}
 	}
@@ -600,7 +619,7 @@ namespace gdp
 				scale = scale * currRatio + scale2 * prevRatio;
 				rotation = glm::slerp(rotation2, rotation, currRatio);
 			}
- 
+
 			// Calculate our transformation matrix
 			glm::mat4 translationMatrix = glm::translate(glm::mat4(1.f), position);
 			glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
@@ -615,7 +634,6 @@ namespace gdp
 			printf("    Rotation: (%.4f, %.4f, %.4f, %.4f)\n", rotation.x, rotation.y, rotation.z, rotation.w);
 #endif
 		}
-
 		glm::mat4 globalTransformation = parentTransformationMatrix * transformationMatrix;
 
 		if (m_BoneNameToIdMap.find(nodeName) != m_BoneNameToIdMap.end())

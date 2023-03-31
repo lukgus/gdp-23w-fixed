@@ -119,4 +119,10 @@ namespace physics
 
 		m_BulletRigidBody->applyTorqueImpulse(btTorqueImpulse);
 	}
+
+	void RigidBody::GetTransform(glm::mat4& transform)
+	{
+		btTransform t = m_BulletRigidBody->getWorldTransform();
+		CastGLMMat4(t, &transform);
+	}
 }

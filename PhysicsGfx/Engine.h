@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "physics.h"
 #include "Model.h"
+#include "Ragdoll.h"
 
 namespace gdp
 {
@@ -29,6 +30,7 @@ namespace gdp
     physics::iVehicle* GDP_CreateVehicle(physics::iRigidBody* chassis);
     physics::iCharacterController* GDP_CreateCharacterController(
         physics::iConvexShape* shape, float stepHeight, const glm::vec3& up);
+    Ragdoll* GDP_CreateRagdoll(float scale);
 
     // Assimp Loading
     void GDP_LoadFBXFile(unsigned int& id, std::string& animationName, const std::string& filename);

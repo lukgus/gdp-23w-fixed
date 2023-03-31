@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Model.h"
 #include "BoneHierarchy.h"
+#include "Ragdoll.h"
 
 #define RightHandNodeName "RightHandNode"		// Tell animator to name the right hand as this
 #define HeadNodeName "HeadNode"					// 
@@ -16,6 +17,12 @@ enum NodeNames
 	Head,
 	RightHand,
 	LeftHand
+};
+
+enum UpdateMode
+{
+	Kinematic,	// Animation
+	Physics		// Ragdoll
 };
 
 namespace gdp
@@ -57,6 +64,14 @@ namespace gdp
 	public:
 		Character();
 		~Character();
+
+		void SetRagdoll(Ragdoll* ragdoll) {
+			m_Ragdoll = ragdoll;
+		}
+
+		void SetUpdateMode(UpdateMode mode) {
+			m_UpdateMode = mode;
+		}
 
 		// Loading
 		void LoadCharacterFromAssimp(const char* filename);
@@ -129,7 +144,9 @@ namespace gdp
 		std::vector<AnimNode*> m_BodyNodes;
 		std::map<NodeNames, int> m_NameToBodyNodeIndex;
 
-
+		// Ragdoll
+		Ragdoll* m_Ragdoll;
+		UpdateMode m_UpdateMode;
 
 		// Bones
 		std::vector<BoneVertexData> m_BoneVertexData;		// Just need for Rendering vertex info
